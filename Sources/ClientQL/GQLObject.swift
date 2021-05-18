@@ -11,8 +11,6 @@ public protocol GQLObject : GQLType, GQLGraphable {
     associatedtype Keys: CodingKey, Hashable
 
     init(from decoder: GQLDecoder<Keys>) throws
-    
-    static var graphQLFields : String { get }
 }
 
 // extended functionality
@@ -21,7 +19,8 @@ extension GQLObject {
     public static var fields : String {
         let grapher = GraphingDecoder<Keys>()
         _ = try? Self(from: grapher)
-        return grapher.fields.map { generateField(name: $0.name, type: $0.type) }.joined(separator: " ")
+        let fields = grapher.fields.map { generateField(name: $0.name, type: $0.type) }.joined(separator: " ")
+        return "{ \(fields) }"
     }
     
     static private func generateField(name: String, type: QueryField.GQLType) -> String {
@@ -33,5 +32,9 @@ extension GQLObject {
         case .list(let type):
             return generateField(name: name, type: type)
         }
+    }
+    
+    static public var graphQLTypeName: String {
+        String(describing: type(of: self))
     }
 }

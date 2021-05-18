@@ -11,6 +11,14 @@ public protocol GQLType : Codable {
     static var graphQLTypeName : String { get }
 }
 
+// extension
+
+extension GQLType {
+    var graphQLType : String {
+        Self.graphQLTypeName
+    }
+}
+
 // conformance
 
 extension String : GQLType {

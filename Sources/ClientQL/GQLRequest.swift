@@ -24,7 +24,9 @@ extension GQLRequest {
     }
     
     var inlineParamaters : (title: String, field: String) {
-        parameters?.reduce((title: "", field: "")) { result, param in
+        guard let parameters = parameters, !parameters.isEmpty else { return ("", "") }
+        
+        let inline = parameters.reduce((title: "", field: "")) { result, param in
             var title = result.title
             var field = result.field
             
@@ -34,11 +36,13 @@ extension GQLRequest {
             if !title.isEmpty { title.append(", ") }
             if !field.isEmpty { field.append(", ") }
             
-            title.append("$\(key): \(value)")
+            title.append("$\(key): \(value.graphQLType)")
             field.append("\(key): $\(key)")
             
             return (title, field)
-        } ?? ("", "")
+        }
+        
+        return ("(\(inline.title))", "(\(inline.field))")
     }
     
     var variables : [String : EncodableParam]? {
@@ -55,7 +59,7 @@ extension GQLRequest {
         let titleParams = params.title
         let fieldParams = params.field
         
-        return "\(rootType) \(title)\(titleParams) { \(field)\(fieldParams) }"
+        return "\(rootType) \(title)\(titleParams) { success: \(field)\(fieldParams) }"
     }
     
     var payload : Payload {
@@ -72,6 +76,6 @@ extension GQLRequest where Response : GQLObject {
         let fieldParams = params.field
         let fields = Response.fields
         
-        return "\(rootType) \(title)\(titleParams) { \(field)\(fieldParams) \(fields) }"
+        return "\(rootType) \(title)\(titleParams) { success: \(field)\(fieldParams) \(fields) }"
     }
 }
