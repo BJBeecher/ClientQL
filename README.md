@@ -1,3 +1,3 @@
 # ClientQL
 
-A description of this package.
+Bare bones graphql client.
