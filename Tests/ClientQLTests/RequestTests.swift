@@ -29,7 +29,7 @@
         
         func testInlineParameters(){
             // given
-            let request = GQLRequest<UUID>(.query, field: "myUser", parameters: ["car": "Camry"])
+            let request = GQLRequest<UUID>(.query, field: "myUser", parameters: [.init(name: "car", value: "Camry")])
             let params = request.inlineParamaters
             
             // then
@@ -39,7 +39,7 @@
         
         func testVariables(){
             // given
-            let request = GQLRequest<UUID>(.query, field: "myUser", parameters: ["car": "Camry"])
+            let request = GQLRequest<UUID>(.query, field: "myUser", parameters: [.init(name: "car", value: "Camry")])
             
             // then
             XCTAssertEqual(request.variables?["car"]?.value as? String, "Camry")
@@ -47,7 +47,7 @@
         
         func testPrimitiveQuery(){
             // given
-            let request = GQLRequest<UUID>(.query, field: "myUser", parameters: ["car": "Camry"])
+            let request = GQLRequest<UUID>(.query, field: "myUser", parameters: [.init(name: "car", value: "Camry")])
             
             // then
             XCTAssertEqual(request.query, "query MyUser($car: String!) { success: myUser(car: $car) }")
@@ -55,7 +55,7 @@
         
         func testObjectQuery(){
             // given
-            let request = GQLRequest<MockObject>(.query, field: "myUser", parameters: ["car": "Camry"])
+            let request = GQLRequest<MockObject>(.query, field: "myUser", parameters: [.init(name: "car", value: "Camry")])
             
             // then
             XCTAssertEqual(request.query, "query MyUser($car: String!) { success: myUser(car: $car) { id name createdTS } }")

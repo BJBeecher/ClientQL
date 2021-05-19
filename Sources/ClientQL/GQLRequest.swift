@@ -6,12 +6,12 @@
 //
 import Foundation
 
-public struct GQLRequest<Response : GQLType> {
+public struct GQLRequest<Response : GQLType> : Hashable {
     let rootType : RootType
     let field : String
-    var parameters : [String : GQLType]? = nil
+    var parameters : [GQLParameter]? = nil
     
-    public init(_ rootType: RootType, field: String, parameters: [String : GQLType]? = nil){
+    public init(_ rootType: RootType, field: String, parameters: [GQLParameter]? = nil){
         self.rootType = rootType
         self.field = field
         self.parameters = parameters
@@ -30,7 +30,7 @@ extension GQLRequest {
             var title = result.title
             var field = result.field
             
-            let key = param.key
+            let key = param.name
             let value = param.value
             
             if !title.isEmpty { title.append(", ") }
@@ -45,11 +45,11 @@ extension GQLRequest {
         return ("(\(inline.title))", "(\(inline.field))")
     }
     
-    var variables : [String : EncodableParam]? {
-        parameters?.reduce([String : EncodableParam]()) { result, item in
+    var variables : [String : EncodableValue]? {
+        parameters?.reduce([String : EncodableValue]()) { result, item in
             var newResult = result
-            let newValue = EncodableParam(value: item.value)
-            newResult[item.key] = newValue
+            let newValue = EncodableValue(value: item.value)
+            newResult[item.name] = newValue
             return newResult
         }
     }

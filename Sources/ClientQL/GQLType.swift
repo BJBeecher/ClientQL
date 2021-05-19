@@ -11,15 +11,19 @@ public protocol GQLType : Codable {
     static var graphQLTypeName : String { get }
 }
 
-// extension
+// default functionality
 
 extension GQLType {
+    func data(using encoder: JSONEncoder = .init()) -> Data? {
+        try? encoder.encode(self)
+    }
+    
     var graphQLType : String {
         Self.graphQLTypeName
     }
 }
 
-// conformance
+// default conformance
 
 extension String : GQLType {
     public static let graphQLTypeName = "String!"
