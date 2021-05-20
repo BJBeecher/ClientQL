@@ -60,4 +60,12 @@
             // then
             XCTAssertEqual(request.query, "query MyUser($car: String!) { success: myUser(car: $car) { id name createdTS } }")
         }
+        
+        func testObjectArrayQuery(){
+            // given
+            let request = GQLRequest<[MockObject]>(.query, field: "myUser", parameters: [.init(name: "car", value: "Camry")])
+            
+            // then
+            XCTAssertEqual(request.query, "query MyUser($car: String!) { success: myUser(car: $car) { id name createdTS } }")
+        }
     }

@@ -65,7 +65,7 @@ extension GQLRequest {
 
 // object conformance -- adds field graph to query
 
-extension GQLRequest where Response : GQLObject {
+extension GQLRequest where Response : GQLGraphable {
     var query : String {
         let params = inlineParamaters
         let titleParams = params.title
