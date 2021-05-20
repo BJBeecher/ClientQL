@@ -61,10 +61,6 @@ extension GQLRequest {
         
         return "\(rootType) \(title)\(titleParams) { success: \(field)\(fieldParams) }"
     }
-    
-    var payload : Payload {
-        .init(query: query, variables: variables)
-    }
 }
 
 // object conformance -- adds field graph to query
