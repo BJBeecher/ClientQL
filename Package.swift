@@ -14,7 +14,7 @@ let package = Package(
             targets: ["ClientQL"]),
     ],
     dependencies: [
-        .package(name: "RequestSocket", url: "https://github.com/BJBeecher/RequestSocket.git", .upToNextMajor(from: "1.0.0"))
+        .package(name: "RequestSocket", url: "https://github.com/BJBeecher/RequestSocket.git", .upToNextMajor(from: "1.1.0"))
     ],
     targets: [
         .target(
