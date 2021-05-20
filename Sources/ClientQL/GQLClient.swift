@@ -25,7 +25,7 @@ public final class GQLClient {
     
     public convenience init(url: URL, config: URLSessionConfiguration = .default, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
         let socket = Websocket(url: url, config: config, encoder: encoder, decoder: decoder)
-        self.init(socket.sendRequest, encoder: encoder, decoder: decoder)
+        self.init(socket.send, encoder: encoder, decoder: decoder)
     }
 }
 
