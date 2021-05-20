@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import RequestSocket
 
-public final class ClientQL {
+public final class GQLClient {
     typealias DataTask = (Data) -> AnyPublisher<Data, Error>
     
     let send : DataTask
@@ -31,7 +31,7 @@ public final class ClientQL {
 
 // public API
 
-public extension ClientQL {
+public extension GQLClient {
     func send<Output : GQLType>(_ request: GQLRequest<Output>) -> AnyPublisher<Output, Error> {
         let payload = request.payload
         

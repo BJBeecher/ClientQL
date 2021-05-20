@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class GQLDecoder<Keys: CodingKey> {
+open class GQLDecoder<Keys: CodingKey> {
     public func from<T: Decodable & GQLPrimitive>(_ field: Keys, ofType: T.Type = T.self) throws -> T {
         fatalError()
     }
