@@ -49,6 +49,10 @@ extension Bool : GQLType {
     public static let graphQLTypeName = "Boolean!"
 }
 
+extension Date : GQLType {
+    public static let graphQLTypeName: String = "Date!"
+}
+
 extension Optional : GQLType where Wrapped : GQLType {
     public static var graphQLTypeName : String {
         "\(Wrapped.graphQLTypeName.dropLast())"
