@@ -59,19 +59,10 @@ extension GQLRequest {
         let titleParams = params.title
         let fieldParams = params.field
         
-        return "\(rootType) \(title)\(titleParams) { success: \(field)\(fieldParams) }"
-    }
-}
-
-// object conformance -- adds field graph to query
-
-extension GQLRequest where Response : GQLGraphable {
-    var query : String {
-        let params = inlineParamaters
-        let titleParams = params.title
-        let fieldParams = params.field
-        let fields = Response.fields
-        
-        return "\(rootType) \(title)\(titleParams) { success: \(field)\(fieldParams) \(fields) }"
+        if let fields = (Response.self as? GQLGraphable.Type)?.fields {
+            return "\(rootType) \(title)\(titleParams) { success: \(field)\(fieldParams) \(fields) }"
+        } else {
+            return "\(rootType) \(title)\(titleParams) { success: \(field)\(fieldParams) }"
+        }
     }
 }

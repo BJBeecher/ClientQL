@@ -33,7 +33,7 @@ public final class GQLClient {
 
 public extension GQLClient {
     func send<Output : GQLType>(_ request: GQLRequest<Output>) -> AnyPublisher<Output, Error> {
-        let payload = Payload(query: request.query, variables: request.variables)
+        let payload = buildPayload(with: request)
         
         guard let data = try? encoder.encode(payload) else {
             return Fail(error: Failure.encodingError).eraseToAnyPublisher()
@@ -52,5 +52,17 @@ public extension GQLClient {
                     return Fail(error: Failure.missingResponseData).eraseToAnyPublisher()
                 }
             }).eraseToAnyPublisher()
+    }
+}
+
+// internal API
+
+extension GQLClient {
+    func buildPayload<Output: GQLType>(with request: GQLRequest<Output>) -> Payload {
+        let query = request.query
+        let variables = request.variables
+        let payload = Payload(query: query, variables: variables)
+        
+        return payload
     }
 }

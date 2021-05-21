@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol GQLObject : GQLType, GQLGraphable {
+public protocol GQLObject : GQLGraphable {
     associatedtype Keys: CodingKey, Hashable
 
     init(from decoder: GQLDecoder<Keys>) throws

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol GQLGraphable {
+public protocol GQLGraphable : GQLType {
     static var fields : String { get }
 }
 
