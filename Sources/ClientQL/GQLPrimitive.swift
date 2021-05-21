@@ -24,3 +24,5 @@ extension Float : GQLPrimitive {}
 extension Double : GQLPrimitive {}
 
 extension Bool : GQLPrimitive {}
+
+extension Date : GQLPrimitive {}
