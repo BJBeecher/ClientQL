@@ -9,7 +9,7 @@ import Foundation
 public struct GQLRequest<Response : GQLType> : Hashable {
     let rootType : RootType
     let field : String
-    var parameters : [GQLParameter]? = nil
+    let parameters : [GQLParameter]?
     
     public init(_ rootType: RootType, field: String, parameters: [GQLParameter]? = nil){
         self.rootType = rootType
