@@ -33,11 +33,9 @@ class GraphingDecoder<Keys: CodingKey>: GQLDecoder<Keys> {
     override func objectsFrom<T: GQLObject>(_ key: Keys, ofType: T.Type = T.self) throws -> [T] {
         let childDecoder = GraphingDecoder<T.Keys>()
         let obj = try T(from: childDecoder)
-        
         let arrayWrappedGraph = QueryField(name: key.stringValue, type: .list(.object(name: "\(T.self)", fields: childDecoder.fields)))
-        
         fields.append(arrayWrappedGraph)
-        
+    
         return [obj]
     }
 }

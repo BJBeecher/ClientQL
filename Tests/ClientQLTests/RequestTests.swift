@@ -30,6 +30,8 @@
         func testInlineParameters(){
             // given
             let request = GQLRequest<UUID>(.query, field: "myUser", parameters: [.init(name: "car", value: "Camry")])
+            
+            // when
             let params = request.inlineParamaters
             
             // then

@@ -10,22 +10,20 @@ import Combine
 import RequestSocket
 
 public final class GQLClient {
-    typealias DataTask = (Data) -> AnyPublisher<Data, Error>
-    
-    let send : DataTask
+    let transport : TransportInterface
     
     let encoder : JSONEncoder
     let decoder : JSONDecoder
     
-    init(_ dataTask: @escaping DataTask, encoder: JSONEncoder, decoder: JSONDecoder){
-        self.send = dataTask
+    init(transport: TransportInterface, encoder: JSONEncoder, decoder: JSONDecoder){
+        self.transport = transport
         self.encoder = encoder
         self.decoder = decoder
     }
     
     public convenience init(url: URL, config: URLSessionConfiguration = .default, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
         let socket = Websocket(url: url, config: config, encoder: encoder, decoder: decoder)
-        self.init(socket.send, encoder: encoder, decoder: decoder)
+        self.init(transport: socket, encoder: encoder, decoder: decoder)
     }
 }
 
@@ -35,13 +33,8 @@ public extension GQLClient {
     func send<Output : GQLType>(_ request: GQLRequest<Output>) -> AnyPublisher<Output, Error> {
         let payload = buildPayload(with: request)
         
-        guard let data = try? encoder.encode(payload) else {
-            return Fail(error: Failure.encodingError).eraseToAnyPublisher()
-        }
-        
-        return send(data)
-            .decode(type: GQLResponse<Output>.self, decoder: decoder)
-            .flatMap({ response -> AnyPublisher<Output, Error> in
+        return transport.send(payload: payload)
+            .flatMap({ (response: GQLResponse<Output>) -> AnyPublisher<Output, Error> in
                 if let data = response.data?.success {
                     return Just(data)
                         .setFailureType(to: Error.self)
