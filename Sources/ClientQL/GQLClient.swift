@@ -12,24 +12,23 @@ import RequestSocket
 public final class GQLClient {
     let transport : TransportInterface
     
-    let encoder : JSONEncoder
-    let decoder : JSONDecoder
-    
-    init(transport: TransportInterface, encoder: JSONEncoder, decoder: JSONDecoder){
+    init(transport: TransportInterface){
         self.transport = transport
-        self.encoder = encoder
-        self.decoder = decoder
     }
     
     public convenience init(url: URL, config: URLSessionConfiguration = .default, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
-        let socket = Websocket(url: url, config: config, encoder: encoder, decoder: decoder)
-        self.init(transport: socket, encoder: encoder, decoder: decoder)
+        let socket = Websocket(url: url, encoder: encoder, decoder: decoder)
+        self.init(transport: socket)
     }
 }
 
 // public API
 
 public extension GQLClient {
+    func connect(withConfiguartion config: URLSessionConfiguration) -> AnyPublisher<Bool, Never> {
+        transport.connect(withConfiguration: config)
+    }
+    
     func send<Output : GQLType>(_ request: GQLRequest<Output>) -> AnyPublisher<Output, Error> {
         let payload = buildPayload(with: request)
         
