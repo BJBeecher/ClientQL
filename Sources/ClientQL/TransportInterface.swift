@@ -11,7 +11,7 @@ import RequestSocket
 
 protocol TransportInterface {
     func connect(withConfiguration: URLSessionConfiguration) -> AnyPublisher<Bool, Never>
-    func send<Payload: Encodable, Output: Decodable>(payload: Payload) -> AnyPublisher<Output, Error>
+    func send<Payload: Encodable, Output: Decodable>(payload: Payload, withTimeout timeout: DispatchQueue.SchedulerTimeType.Stride?) -> AnyPublisher<Output, Error>
 }
 
 // conformance

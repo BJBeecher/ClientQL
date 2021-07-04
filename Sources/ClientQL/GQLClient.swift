@@ -11,14 +11,16 @@ import RequestSocket
 
 public final class GQLClient {
     let transport : TransportInterface
+    let timeout : DispatchQueue.SchedulerTimeType.Stride
     
-    init(transport: TransportInterface){
+    init(transport: TransportInterface, timeout: DispatchQueue.SchedulerTimeType.Stride){
         self.transport = transport
+        self.timeout = timeout
     }
     
-    public convenience init(url: URL, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
+    public convenience init(url: URL, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init(), timeout: DispatchQueue.SchedulerTimeType.Stride = 8) {
         let socket = Websocket(url: url, encoder: encoder, decoder: decoder)
-        self.init(transport: socket)
+        self.init(transport: socket, timeout: timeout)
     }
 }
 
@@ -29,10 +31,10 @@ public extension GQLClient {
         transport.connect(withConfiguration: config)
     }
     
-    func send<Output : GQLType>(_ request: GQLRequest<Output>) -> AnyPublisher<Output, Error> {
+    func send<Output : GQLType>(_ request: GQLRequest<Output> ) -> AnyPublisher<Output, Error> {
         let payload = buildPayload(with: request)
         
-        return transport.send(payload: payload)
+        return transport.send(payload: payload, withTimeout: request.rootType != .subscription ? timeout : nil)
             .flatMap({ (response: GQLResponse<Output>) -> AnyPublisher<Output, Error> in
                 if let data = response.data?.success {
                     return Just(data)
