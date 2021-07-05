@@ -19,7 +19,7 @@ public final class GQLClient {
     }
     
     public convenience init(url: URL, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init(), timeout: DispatchQueue.SchedulerTimeType.Stride = 8) {
-        let socket = Websocket(url: url, encoder: encoder, decoder: decoder)
+        let socket = Websocket(encoder: encoder, decoder: decoder)
         self.init(transport: socket, timeout: timeout)
     }
 }
@@ -27,8 +27,8 @@ public final class GQLClient {
 // public API
 
 public extension GQLClient {
-    func connect(withConfiguartion config: URLSessionConfiguration) -> AnyPublisher<Bool, Never> {
-        transport.connect(withConfiguration: config)
+    func connect(withRequest request: URLRequest) -> AnyPublisher<Bool, Never> {
+        transport.connect(withRequest: request)
     }
     
     func send<Output : GQLType>(_ request: GQLRequest<Output> ) -> AnyPublisher<Output, Error> {

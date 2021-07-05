@@ -10,7 +10,7 @@ import Combine
 import RequestSocket
 
 protocol TransportInterface {
-    func connect(withConfiguration: URLSessionConfiguration) -> AnyPublisher<Bool, Never>
+    func connect(withRequest: URLRequest) -> AnyPublisher<Bool, Never>
     func send<Payload: Encodable, Output: Decodable>(payload: Payload, withTimeout timeout: DispatchQueue.SchedulerTimeType.Stride?) -> AnyPublisher<Output, Error>
 }
 
