@@ -18,7 +18,7 @@ public final class GQLClient {
         self.timeout = timeout
     }
     
-    public convenience init(url: URL, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init(), timeout: DispatchQueue.SchedulerTimeType.Stride = 8) {
+    public convenience init(encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init(), timeout: DispatchQueue.SchedulerTimeType.Stride = 8) {
         let socket = Websocket(encoder: encoder, decoder: decoder)
         self.init(transport: socket, timeout: timeout)
     }
