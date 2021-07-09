@@ -31,21 +31,19 @@ public extension GQLClient {
         transport.connect(withRequest: request)
     }
     
-    func send<Output : GQLType>(_ request: GQLRequest<Output> ) -> AnyPublisher<Output, Error> {
+    func send<Output : GQLType>(_ request: GQLRequest<Output>) -> AnyPublisher<Output, Error> {
         let payload = buildPayload(with: request)
         
         return transport.send(payload: payload, withTimeout: request.rootType != .subscription ? timeout : nil)
-            .flatMap({ (response: GQLResponse<Output>) -> AnyPublisher<Output, Error> in
+            .tryMap { (response: GQLResponse<Output>) in
                 if let data = response.data?.success {
-                    return Just(data)
-                        .setFailureType(to: Error.self)
-                        .eraseToAnyPublisher()
+                    return data
                 } else if let errors = response.errors {
-                    return Fail(error: Failure.queryFailures(errors)).eraseToAnyPublisher()
+                    throw Failure.queryFailures(errors)
                 } else {
-                    return Fail(error: Failure.missingResponseData).eraseToAnyPublisher()
+                    throw Failure.missingResponseData
                 }
-            }).eraseToAnyPublisher()
+            }.eraseToAnyPublisher()
     }
 }
 
