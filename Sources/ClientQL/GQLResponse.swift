@@ -8,16 +8,16 @@
 import Foundation
 
 public struct GQLResponse<T: Codable> : Codable {
-    let data : Success?
-    let errors : [Failure]?
+    public let data : Success?
+    public let errors : [Failure]?
 }
 
 public extension GQLResponse {
     struct Success : Codable {
-        let success : T
+        public let success : T
     }
     
     struct Failure : Error, Codable {
-        let message : String
+        public let message : String
     }
 }

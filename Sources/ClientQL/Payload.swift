@@ -15,7 +15,7 @@ struct EncodableValue : Encodable {
     }
 }
 
-struct Payload : Encodable {
+public struct Payload : Encodable {
     let query : String
     let variables : [String : EncodableValue]?
 }

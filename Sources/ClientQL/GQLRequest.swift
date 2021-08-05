@@ -7,9 +7,9 @@
 import Foundation
 
 public struct GQLRequest<Response : GQLType> : Hashable {
-    let rootType : RootType
-    let field : String
-    let parameters : [GQLParameter]?
+    public let rootType : RootType
+    public let field : String
+    public let parameters : [GQLParameter]?
     
     public init(_ rootType: RootType, field: String, parameters: [GQLParameter]? = nil){
         self.rootType = rootType
@@ -53,7 +53,9 @@ extension GQLRequest {
             return newResult
         }
     }
-    
+}
+
+public extension GQLRequest {
     var query : String {
         let params = inlineParamaters
         let titleParams = params.title
@@ -64,5 +66,9 @@ extension GQLRequest {
         } else {
             return "\(rootType) \(title)\(titleParams) { success: \(field)\(fieldParams) }"
         }
+    }
+    
+    var payload : Payload {
+        return .init(query: query, variables: variables)
     }
 }
