@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "RequestSocket",
+        "repositoryURL": "https://github.com/BJBeecher/RequestSocket.git",
+        "state": {
+          "branch": null,
+          "revision": "a4c6f33b4fcc0112eee561d50213167ff0bd44b3",
+          "version": "3.1.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

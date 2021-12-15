@@ -13,13 +13,11 @@ let package = Package(
             name: "ClientQL",
             targets: ["ClientQL"]),
     ],
-    dependencies: [
-        .package(name: "RequestSocket", url: "https://github.com/BJBeecher/RequestSocket.git", .upToNextMajor(from: "3.0.0"))
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "ClientQL",
-            dependencies: ["RequestSocket"]),
+            dependencies: []),
         .testTarget(
             name: "ClientQLTests",
             dependencies: ["ClientQL"]),
